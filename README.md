@@ -35,16 +35,16 @@ You can override consumer code by importing the manager and create your own cons
 ```
 class SocketManager(ChannlsManager):
     #on connection, you can close connection with await channel.close()
-    async def on_connect(self, groupName, channel):
-        pass
+    async def on_connect(self, group_name, channel):
+        await channel.accept()
 
     #disconnect
-    async def disconnect(self, _group, channel):
-        await self.group_discard(_group, channel)
+    async def disconnect(self, group_name, channelName):
+        await self.group_discard(group_name, channelName)
 
-    #receive from websocket
-    async def receive(self, name, data):
-        await self.group_send(name, json.dumps(data))
+    #receive from websocket 
+    async def receive(self, group_name, data):
+        await self.group_send(group_name, json.dumps(data))
 
     #receive message from server and send to websocket
     async def group_send(self, group_name, data):
